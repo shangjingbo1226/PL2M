@@ -1,11 +1,13 @@
 A Parallel and Efficient Algorithm for Learning to Match (PL2M)
 ====
 
-== Build ==
+Build
+----
 
 Simply type "make" in the terminal line or follow the commands in the Makefile.
 
-== Usage ==
+Usage
+----
 
 pl2m_train is used to train models based on train/test files and user/item feature matrix files, which needs 5 parameters:
 
@@ -17,11 +19,13 @@ pl2m_infer is used to make predictions based on trained models, which needs 3 pa
 
 For more details, please check the example.
 
-== Configure File ==
+Configure File
+----
 
 Please check the "examples/pcf.conf" for details.
 
-== Format of the Matrix File ==
+Format of the Matrix File
+----
 Spare Matrix for user features and item features.
 
 For each line, first come with the id of user/item. Then followed by the number of non-zero features. Features are described by their indices and values, separated by a colon. Here is an example for user 123, who have 5 non-zero features in total.
@@ -30,15 +34,16 @@ For each line, first come with the id of user/item. Then followed by the number 
     
 For more details, please check the example.
 
-== Format of Train/Test file ==
-
+Format of Train/Test file
+----
 Classical 3/4 columns, where weight of this instance is optional (1 default). However, in one train/test files, the columns in each line should be same.
 
     user item rate [weight]
     
 For more details, please check the example.
 
-== Example ==
+Example
+----
 
 1. run the buildFeatMat.py in the folder "data".
 
@@ -56,7 +61,8 @@ which will generate 4 four files in the folder "data", which are the train/test 
 
 which includes both training and testing procedures.
 
-== Reference ==
+Reference
+----
 
 If you are using this toolkit for some research, please cite the following papers.
 
