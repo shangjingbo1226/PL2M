@@ -22,21 +22,24 @@ int main( int argc, char* argv[]){
 	}
     apex_svd::PCDSolver* solver=new apex_svd::PCDSolver();
 	solver->initialize(argv[1],argv[2],argv[3],argv[4],argv[6]);
+	fprintf(stderr, "solver initilaized! start training...\n");
 	
 	double start=(double)time(NULL);
-	for (int round=solver->startRound();round<solver->getMaxRound();++round){        
-        printf("round %.2d\t",round);fflush(stdout);
+	for (int round=solver->startRound();round<solver->getMaxRound();++round){
+	    for (int i = 0; i < 10; ++ i) {
+	        fprintf(stderr, "\b");
+	    }
+        fprintf(stderr, "round %.3d",round);
+        fflush(stderr);
+        
 	    solver->update_one_round();
         char file[1000];
         sprintf(file,"%s.%d",argv[6],round+1);
         solver->finish(file);
-        /*char command[1000];
-        sprintf(command,"svd_pcdpp_infer %s %s %s %s",argv[1],argv[4],argv[5],file);
-        int rt = system(command);
-        apex_utils::assert_true( rt == rt );*/
 	}
 	double end=(double)time(NULL);
-	printf("train time all = %.0f sec\n",(end-start));
+	fprintf(stderr, "\ndone.\n");
+	fprintf(stderr, "time elaspsed = %.0f seconds\n",(end-start));
 	
 	delete solver;
 	

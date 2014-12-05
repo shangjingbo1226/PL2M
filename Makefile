@@ -1,6 +1,6 @@
 export CC  = gcc
 export CXX = g++
-export CFLAGS = -Wall -O3 -msse2 -I.. 
+export CFLAGS = -O3 -msse2 -I.. 
 BIN = bin/pl2m_train bin/pl2m_infer
 OBJ = 
 .PHONY: clean all

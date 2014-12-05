@@ -347,8 +347,8 @@ namespace apex_svd
             learningRate = 1.0f;
             shrinkRate = 1.0f;   maxSR = 0.2f; incSR = 0.0f; burnSRRound = 0;
             biasOnlyRound = 0; debugFlag = 0;
-            sizePCDBlock = 1; nthread= 0; useHess = 0; updateMethod = 0; 
-            shuffleDim = 1; updateWise = 0; useInsCnt = 0; maxRound = 0;
+            sizePCDBlock = 1; nthread= 0; useHess = 1; updateMethod = 0; 
+            shuffleDim = 1; updateWise = 0; useInsCnt = 0; maxRound = 40;
             counterNan = 0; counterInf = 0; reportRound = 10;
             skipUserBias = 0; blockUpdate = 0;
         }

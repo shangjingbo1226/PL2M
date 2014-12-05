@@ -228,7 +228,7 @@ namespace apex_svd{
             ufInsCnt.resize(numUF);
             ifInsCnt.resize(numIF);
         	if (param.useInsCnt==1){
-				puts("===mode 1===");
+				//puts("===mode 1===");
             	double sum=0;
             	for (int i=0;i<numUF;++i){
             	    PCDMatrixS<Pair>::RLine line=uf2u[i];
@@ -238,11 +238,12 @@ namespace apex_svd{
             	        ufInsCnt[i]+=u2inst[uid].length;
             	    }
             	    sum+=ufInsCnt[i];
-            	    if (!ufInsCnt[i]){
-                	    printf("uf %d %f\n",i,ufInsCnt[i]);fflush(stdout);
+            	    if (ufInsCnt[i] == 0) {
+                	    fprintf(stderr, "[Warning] no users have feature %d!\n", i);
+                	    fflush(stderr);
             	    }
             	}
-                printf("avg on UF = %.10f\n",sum/numUF);fflush(stdout);
+                fprintf(stderr, "avg number of users for each feature = %.10f\n", sum / numUF);fflush(stderr);
                 sum=0;
             	for (int i=0;i<numIF;++i){
             	    PCDMatrixS<Pair>::RLine line=if2i[i];
@@ -252,13 +253,13 @@ namespace apex_svd{
             	        ifInsCnt[i]+=i2inst[iid].length;
             	    }
             	    sum+=ifInsCnt[i];
-            	    if (!ifInsCnt[i]){
-                	    printf("if %d %f\n",i,ifInsCnt[i]);fflush(stdout);
+            	    if (ifInsCnt[i] == 0) {
+                	    fprintf(stderr, "[Warning] no items have feature %d!\n", i);
+                	    fflush(stderr);
             	    }
             	}
-            	printf("avg on IF = %.10f\n",sum/numIF);fflush(stdout);
+            	fprintf(stderr, "avg number of items for each feature = %.10f\n",sum/numIF);fflush(stderr);
         	}else if (param.useInsCnt==2){
-				puts("===mode 2===");
             	double sum=0;
             	for (int i=0;i<numUF;++i){
             	    PCDMatrixS<Pair>::RLine line=uf2u[i];
@@ -269,11 +270,12 @@ namespace apex_svd{
             	        ufInsCnt[i]+=u2inst[uid].length*sqr(fvalue);
             	    }
             	    sum+=ufInsCnt[i];
-            	    if (!ufInsCnt[i]){
-                	    printf("uf %d %f\n",i,ufInsCnt[i]);fflush(stdout);
+            	    if (ufInsCnt[i] == 0) {
+                	    fprintf(stderr, "[Warning] no users have feature %d!\n", i);
+                	    fflush(stderr);
             	    }
             	}
-                printf("avg on UF = %.10f\n",sum/numUF);fflush(stdout);
+                fprintf(stderr, "avg number of users for each feature = %.10f\n", sum / numUF);fflush(stderr);
                 sum=0;
             	for (int i=0;i<numIF;++i){
             	    PCDMatrixS<Pair>::RLine line=if2i[i];
@@ -283,11 +285,12 @@ namespace apex_svd{
             	        ifInsCnt[i]+=i2inst[iid].length;
             	    }
             	    sum+=ifInsCnt[i];
-            	    if (!ifInsCnt[i]){
-                	    printf("if %d %f\n",i,ifInsCnt[i]);fflush(stdout);
+            	    if (ifInsCnt[i] == 0) {
+                	    fprintf(stderr, "[Warning] no items have feature %d!\n", i);
+                	    fflush(stderr);
             	    }
             	}
-            	printf("avg on IF = %.10f\n",sum/numIF);fflush(stdout);
+            	fprintf(stderr, "avg number of items for each feature = %.10f\n",sum/numIF);fflush(stderr);
 			}else{
         	    std::fill(ufInsCnt.begin(),ufInsCnt.end(),1.0f);
         	    std::fill(ifInsCnt.begin(),ifInsCnt.end(),1.0f);
@@ -354,12 +357,12 @@ namespace apex_svd{
                     int iid;
                     float coef;
                     if (fscanf(in,"%d:%f",&iid,&coef)!=2){
-                        printf("[Error in load matrix] while reading %s\n",filename);
-                        printf("uid= %d, i= %d\n",uid,i);
+                        fprintf(stderr, "[Error in load matrix] while reading %s\n",filename);
+                        fprintf(stderr, "uid= %d, i= %d\n",uid,i);
                         exit(-2);
                     }
 				    if (iid>=colLimit || iid<0){
-				        printf("%d %d %d\n",uid,iid,colLimit);fflush(stdout);
+				        fprintf(stderr, "%d %d %d\n",uid,iid,colLimit);fflush(stderr);
 				    }
                     apex_utils::assert_true(iid>=0 && iid<colLimit,"error while loadMatrix");
                     matrix.add_budget(uid);
@@ -374,12 +377,12 @@ namespace apex_svd{
                     int iid;
                     float coef;
                     if (fscanf(in,"%d:%f",&iid,&coef)!=2){
-                        printf("[Error in load matrix] while reading %s\n",filename);
-                        printf("uid= %d, i= %d\n",uid,i);
+                        fprintf(stderr, "[Error in load matrix] while reading %s\n",filename);
+                        fprintf(stderr, "uid= %d, i= %d\n",uid,i);
                         exit(-2);
                     }
 				    if (iid>=colLimit || iid<0){
-				        printf("%d %d %d\n",uid,iid,colLimit);fflush(stdout);
+				        fprintf(stderr, "%d %d %d\n",uid,iid,colLimit);fflush(stderr);
 				    }
                     apex_utils::assert_true(iid>=0 && iid<colLimit,"error while loadMatrix");
                     matrix.push_elem( uid, Pair(iid, coef) );
@@ -396,8 +399,8 @@ namespace apex_svd{
                 for (size_t j=0;j<line.length;++j){
                     int cindex=line[j].cindex;
 					if (cindex >= col || cindex < 0) {
-						printf("fuck %d\n", cindex);
-						fflush(stdout);
+						fprintf(stderr, "[Error] column index exceeds! %d\n", cindex);
+						fflush(stderr);
 					}
                     result.add_budget(cindex);
                 }
@@ -417,12 +420,10 @@ namespace apex_svd{
         inline bool tryLoadBuffer( PCDMatrixS<Entry> &mat, const char *fname ){
             char name[ 256 ];
             sprintf( name, "%s.buf", fname );
-            printf("tryLoad from buffer %s\n",name ); fflush(stdout);
             FILE *fi = fopen64( name, "rb" );
             if( fi == NULL ) return false;
             mat.loadBinary( fi );
             fclose( fi );
-            printf("load from buffer %s\n",name );
             return true;
         }
         /*!\brief save a matrix to a binary file*/
@@ -433,7 +434,6 @@ namespace apex_svd{
             FILE *fo = apex_utils::fopen_check( name, "wb" );
             mat.writeBinary( fo );
             fclose( fo );
-            printf("saving buffer %s\n", name );
         }
         /*!\brief load observed record from a binary buffer, return false if buffer not exist*/
         inline bool tryLoadBuffer( std::vector<int> &userID,
@@ -443,7 +443,6 @@ namespace apex_svd{
 								   const char *fname ){
 			char name[ 256 ];
             sprintf( name, "%s.buf", fname );
-            printf("tryLoad from buffer %s\n",name ); fflush(stdout);
             FILE *fi = fopen64( name, "rb" );
             if( fi == NULL ) return false;   
             size_t n;
@@ -456,7 +455,6 @@ namespace apex_svd{
                 apex_utils::assert_true( fread( &weight[0],sizeof(float), n, fi ) > 0, "load" );
             }
             fclose( fi );
-            printf("load from buffer %s\n",name );
             return true;
         }
         /*!\brief save observed record to a binary buffer*/
@@ -477,7 +475,6 @@ namespace apex_svd{
                 fwrite( &weight[0],sizeof(float), n, fo );
             }
             fclose( fo );
-            printf("saving buffer %s\n", name );fflush(stdout);
         }
         /*!\brief calculate user/item in each parallel part*/
         inline void buildPart(PCDMatrixS<Pair> &u2uf, PCDMatrixS<Pair> &uf2u, PCDMatrixS<Single> &result)
@@ -533,7 +530,7 @@ namespace apex_svd{
                 loadMatrix(u2uf,userFeatureMatrix,model.param.numUser,model.param.numFeatUser);
                 saveBuffer( u2uf, userFeatureMatrix );
             }
-            printf("userFeature loaded!\n");fflush(stdout);
+            fprintf(stderr, "userFeature loaded!\n");fflush(stderr);
             if( !tryLoadBuffer( i2if, itemFeatureMatrix ) ){
                 loadMatrix(i2if,itemFeatureMatrix,model.param.numItem,model.param.numFeatItem);
                 saveBuffer( i2if, itemFeatureMatrix );
@@ -542,17 +539,16 @@ namespace apex_svd{
             u2uf.sort();
             i2if.sort();
             
-            printf("itemFeature loaded!\n");fflush(stdout);
+            fprintf(stderr, "itemFeature loaded!\n");fflush(stderr);
             transpose(u2uf,uf2u,model.param.numUser,model.param.numFeatUser);
-			printf("hi\n");fflush(stdout);
+
             transpose(i2if,if2i,model.param.numItem,model.param.numFeatItem);           
-            printf("transpose end!\n");fflush(stdout);
             
             buildPart(u2uf,uf2u,p2u);
             buildPart(i2if,if2i,p2i);
             
-            printf("avg uf %lf\n",(double)u2uf.getSize()/u2uf.numRow());fflush(stdout);
-            printf("avg if %lf\n",(double)i2if.getSize()/i2if.numRow());fflush(stdout);
+            fprintf(stderr, "avg number of features for each user %lf\n",(double)u2uf.getSize()/u2uf.numRow());fflush(stderr);
+            fprintf(stderr, "avg number of features for each item %lf\n",(double)i2if.getSize()/i2if.numRow());fflush(stderr);
                        
             if ( !tryLoadBuffer( userID, itemID, rate, weight, trainName ) ){
                 FILE* in=fopen(trainName,"r");
@@ -571,9 +567,9 @@ namespace apex_svd{
 						w=1;
 					}
 					if (uid>=model.param.numUser){
-						printf("[error] uid %d %d\n",uid,model.param.numUser);fflush(stdout);
+						fprintf(stderr, "[Error] uid %d %d\n",uid,model.param.numUser);fflush(stderr);
 					}else if (iid>=model.param.numItem){
-						printf("[error] iid %d %d\n",iid,model.param.numItem);fflush(stdout);
+						fprintf(stderr, "[Error] iid %d %d\n",iid,model.param.numItem);fflush(stderr);
 					}
 					apex_utils::assert_true(uid<model.param.numUser && iid<model.param.numItem,"conflict conf and train");
                     r /= model.param.scale;
@@ -582,15 +578,13 @@ namespace apex_svd{
                     rate.push_back(r);
                     weight.push_back(w);
                 }
-                printf("loaded from file %s\n",trainName);fflush(stdout);
+                fprintf(stderr, "train loaded\n");
                 
                 saveBuffer( userID, itemID, rate, weight, trainName );
             }
             
             buildIndex(u2inst,userID,model.param.numUser);
             buildIndex(i2inst,itemID,model.param.numItem);
-            
-            printf("all loading end, %ld sec\n",(long)(time(0)-start));fflush(stdout);
             
             // check balance
             u2uf.checkBalance( param.nthread, "u2uf" );
@@ -612,11 +606,7 @@ namespace apex_svd{
             
             this->initData( userFeatureMatrix, itemFeatureMatrix, trainName );    
             
-            printf("start init\n");fflush(stdout);
-            
             PCDSolverCore::init();
-
-			printf("roundCounter = %d\n",roundCounter);fflush(stdout);
 
             if (roundCounter>0){
             	char modelfile[1000];
@@ -627,8 +617,6 @@ namespace apex_svd{
                 PCDSolverCore::calcWU( model.WUser, model.PUFeat, u2uf );
                 PCDSolverCore::calcWU( model.WItem, model.PIFeat, i2if );
             }
-            
-        	printf("all init end\n");fflush(stdout);
         }
         
         inline int startRound( void )

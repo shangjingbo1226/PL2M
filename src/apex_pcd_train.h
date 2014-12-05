@@ -124,7 +124,6 @@ namespace apex_svd{
                     backU[ uid ] = WULine[ uid ];
                     guser[ uid ] = (float)sumg;
                     huser[ uid ] = (float)(loss.calcHess() * sumh);
-//printf("%lf %lf %lf\n",sumg,sumh,loss.calcHess());fflush(stdout);
                 }
             }
         }
