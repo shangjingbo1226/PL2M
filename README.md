@@ -49,7 +49,7 @@ Example
 
         python buildFeatMat.py
 
-which will generate 4 four files in the folder "data", which are the train/test files and user/item feature matrix files.
+   which will generate 4 four files in the folder "data", which are the train/test files and user/item feature matrix files.
 
 2. get into the folder "example", create a folder "models".
 
@@ -69,5 +69,9 @@ If you are using this toolkit for some research, please cite the following paper
 [1]  Shang, J., Chen, T., Li, H., Lu, Z., & Yu, Y. (2014). A Parallel and Efficient Algorithm for Learning to Match. In Data Mining (ICDM), 2014 IEEE 14th International Conference. IEEE.
 
 There is also a long version of this paper available on arXiv.
+
+    http://arxiv.org/abs/1410.6414
+    
+
 
 
