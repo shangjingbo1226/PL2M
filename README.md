@@ -47,17 +47,17 @@ Example
 
 1. run the buildFeatMat.py in the folder "data".
 
-    python buildFeatMat.py
+        python buildFeatMat.py
 
 which will generate 4 four files in the folder "data", which are the train/test files and user/item feature matrix files.
 
 2. get into the folder "example", create a folder "models".
 
-    mkdir models
+        mkdir models
     
 3. run the predefined script.
 
-    ./run.sh
+        ./run.sh
 
 which includes both training and testing procedures.
 
