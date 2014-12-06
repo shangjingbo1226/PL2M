@@ -9,7 +9,7 @@ Simply type "make" in the terminal line or follow the commands in the Makefile.
 Usage
 ----
 
-pl2m_train is used to train models based on train/test files and user/item feature matrix files, which needs 5 parameters:
+pl2m_train is used to train models based on train/test files and user/item feature matrix files, which needs 6 parameters:
 
      [usage] <configure-file> <user-feature-matrix> <item-feature-matrix> <train> <test> <model-output-prefix>
 
